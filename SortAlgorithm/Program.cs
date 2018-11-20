@@ -35,3 +35,28 @@ lua scripts
 -- 	end
 -- 	return nil
 -- end
+
+--二分查找,找到表的开始和结束位置
+function UI_WeatherMain:BinarySearch(_CurDateNum, _Start, _End)
+	local _Mid = math.floor( (_Start + _End) / 2)
+	if _CurDateNum > TB_WEATHER_FORECAST[_Mid].Date then 
+		self:BinarySearch(_CurDateNum, _Mid, _End)
+	elseif _CurDateNum < TB_WEATHER_FORECAST[_Mid].Date then 
+		self:BinarySearch(_CurDateNum, _Start, _Mid)
+	else 
+		if _CurDateNum == TB_WEATHER_FORECAST[_Start].Date then 
+			self.Start = _Start 
+		else
+			_Start = _Start + 1
+		end
+		if _CurDateNum == TB_WEATHER_FORECAST[_End].Date then 
+			self.End = _End 
+		else
+			_End = _End - 1
+		end
+		if self.Start ~= _Start or self.End ~= _End then 
+			self:BinarySearch(_CurDateNum, _Start, _End)
+		end
+	end
+end
+
